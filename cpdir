@@ -13,9 +13,9 @@ if (( $# != 2 )); then
   exit 1
 fi
 
-shortname=`sed s:^.*/:: <<< $DIR`
-mkdir -p $shortname
-pushd $shortname
+shortname=`sed s:^.*/:: <<< $DIR` && \
+mkdir -p $shortname && \
+pushd $shortname && \
 qvm-run --pass-io $VM "tar cv -C $DIR . " | tar xf -
 popd
 
