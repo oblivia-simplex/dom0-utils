@@ -1,0 +1,21 @@
+#! /bin/bash
+# Copies a directory from one of your VMs into dom0.
+# Use wisely. Strictly speaking, you shouldn't be
+# messing around with dom0 all that much. But this
+# comes in handy if you want to, say, install stumpwm
+# in Qubes.
+
+VM=$1
+DIR=$2
+
+if (( $# != 2 )); then
+  echo "Usage: $0 <VM> <DIRECTORY>"
+  exit 1
+fi
+
+shortname=`sed s:^.*/:: <<< $DIR`
+mkdir -p $shortname
+pushd $shortname
+qvm-run --pass-io $VM "tar cv -C $DIR . " | tar xf -
+popd
+
